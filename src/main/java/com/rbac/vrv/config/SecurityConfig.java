@@ -4,6 +4,7 @@ import com.rbac.vrv.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -29,7 +30,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(customizer -> customizer.disable());
-        http.authorizeHttpRequests(request -> request.requestMatchers("register", "login").permitAll().anyRequest().authenticated());
+//        http.authorizeHttpRequests(request -> {
+//            request.requestMatchers( "users").hasRole("ADMIN");
+//            request.requestMatchers("register", "login", "admin").permitAll().anyRequest().authenticated();
+//        });
+
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/users").hasRole("ADMIN") // Ensure role prefixing
+                .requestMatchers("/register", "/login", "/admin").permitAll()
+                .anyRequest().authenticated()
+        );
+
+//           http.authorizeHttpRequests(request ->  request.requestMatchers("register", "login").permitAll().anyRequest().authenticated());
 //        http.formLogin(Customizer.withDefaults());
         http.httpBasic(Customizer.withDefaults());
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

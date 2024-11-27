@@ -3,6 +3,7 @@ package com.rbac.vrv.service;
 import com.rbac.vrv.modal.UserPrincipal;
 import com.rbac.vrv.modal.Users;
 import com.rbac.vrv.repo.UserRepo;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +23,6 @@ public class MyUserDetailsService implements UserDetailsService {
             System.out.println("User not found");
             throw new UsernameNotFoundException("User not found");
         }
-
         return new UserPrincipal(user);
     }
 }
