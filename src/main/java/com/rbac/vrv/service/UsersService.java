@@ -43,14 +43,20 @@ public class UsersService {
         return userRepo.save(user);
     }
 
-    public String verify(Users user) {
-        Authentication authentication =
-                authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+    public String verify(Users user) throws Exception {
 
-        if(authentication.isAuthenticated()) {
-            return jwtService.generateToken(user.getUsername(), authentication.getAuthorities());
-        } else {
-            return "Fail";
+        try {
+            Authentication authentication =
+                    authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+
+            if(authentication.isAuthenticated()) {
+                return jwtService.generateToken(user.getUsername(), authentication.getAuthorities());
+            } else {
+                return "Fail";
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new Exception(e.getMessage());
         }
     }
 

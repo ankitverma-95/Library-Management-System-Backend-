@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    private String login(@RequestBody Users user) {
+    private String login(@RequestBody Users user) throws Exception {
         return usersService.verify(user);
     };
 
