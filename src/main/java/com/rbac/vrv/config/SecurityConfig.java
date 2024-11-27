@@ -30,10 +30,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(customizer -> customizer.disable());
-//        http.authorizeHttpRequests(request -> {
-//            request.requestMatchers( "users").hasRole("ADMIN");
-//            request.requestMatchers("register", "login", "admin").permitAll().anyRequest().authenticated();
-//        });
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/users").hasRole("ADMIN") // Ensure role prefixing
@@ -41,19 +37,12 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
         );
 
-//           http.authorizeHttpRequests(request ->  request.requestMatchers("register", "login").permitAll().anyRequest().authenticated());
-//        http.formLogin(Customizer.withDefaults());
         http.httpBasic(Customizer.withDefaults());
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-//    @Bean
-//    public UserDetailsService customUserDetailService() {
-//        UserDetails user =  User.withDefaultPasswordEncoder().username("amit").password("123").roles("").build();
-//        return new InMemoryUserDetailsManager(user);
-//    }
 
     @Bean
     AuthenticationProvider customAuthenticationProvider() {
