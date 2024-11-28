@@ -31,11 +31,13 @@ public class UserController {
         return usersService.getUsers();
     }
 
+    // Role ADMIN,
     @PostMapping("/admin")
     private Users addAdmin(@RequestBody Users user) {
         return usersService.addAdmin(user);
     }
 
+    // Role ADMIN,
     @PostMapping("/librarian")
     private Users addLibrarian(@RequestBody Users user) {
         return usersService.addLibrarian(user);

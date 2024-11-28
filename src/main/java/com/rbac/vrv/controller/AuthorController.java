@@ -16,11 +16,13 @@ public class AuthorController {
     @Autowired
     AuthorService authorService;
 
+    // Role ADMIN
     @PostMapping("/author")
     public String addAuthor(@RequestBody Author author) {
         return authorService.addAuthor(author);
     }
 
+    // Role ADMIN, LIBRARIAN
     @GetMapping("/author")
     public List<Author> getAuthors() {
         return authorService.getAuthor();
