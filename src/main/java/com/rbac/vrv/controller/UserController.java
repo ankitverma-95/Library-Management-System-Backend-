@@ -36,4 +36,8 @@ public class UserController {
         return usersService.addAdmin(user);
     }
 
+    @PostMapping("/librarian")
+    private Users addLibrarian(@RequestBody Users user) {
+        return usersService.addLibrarian(user);
+    }
 }

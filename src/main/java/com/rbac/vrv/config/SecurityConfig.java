@@ -32,7 +32,13 @@ public class SecurityConfig {
         http.csrf(customizer -> customizer.disable());
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/users").hasRole("ADMIN") // Ensure role prefixing
+                .requestMatchers("/users").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST,"/author", "/book").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/book/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/librarian").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/author").hasAnyRole("ADMIN", "LIBRARIAN")// Ensure role prefixing// Ensure role prefixing
+                .requestMatchers(HttpMethod.POST, "/book/*/user/*").hasAnyRole("ADMIN", "LIBRARIAN")// Ensure role prefixing
+                .requestMatchers(HttpMethod.GET, "/book/borrowed").hasAnyRole("ADMIN", "LIBRARIAN")// Ensure role prefixing
                 .requestMatchers("/register", "/login", "/admin").permitAll()
                 .anyRequest().authenticated()
         );
@@ -57,4 +63,8 @@ public class SecurityConfig {
        return config.getAuthenticationManager();
     }
 
+//    @Bean
+//    GrantedAuthorityDefaults grantedAuthorityDefaults() {
+//        return new GrantedAuthorityDefaults(""); // Remove the "ROLE_" prefix
+//    }
 }

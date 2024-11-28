@@ -44,7 +44,6 @@ public class UsersService {
     }
 
     public String verify(Users user) throws Exception {
-
         try {
             Authentication authentication =
                     authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
@@ -67,6 +66,17 @@ public class UsersService {
     public Users addAdmin(Users user) {
         Role newRole = new Role();
         newRole.setName("ADMIN");
+        roleRepo.save(newRole);
+        user.setPassword(encoder.encode(user.getPassword()));
+        Collection<Role> roles = new ArrayList<>();
+        roles.add(newRole);
+        user.setRoles(roles);
+        return userRepo.save(user);
+    }
+
+    public Users addLibrarian(Users user) {
+        Role newRole = new Role();
+        newRole.setName("LIBRARIAN");
         roleRepo.save(newRole);
         user.setPassword(encoder.encode(user.getPassword()));
         Collection<Role> roles = new ArrayList<>();
